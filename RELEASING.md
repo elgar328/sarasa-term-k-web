@@ -127,10 +127,29 @@ Check the release on jsDelivr; it must print a `200` status line:
 curl -sI "https://cdn.jsdelivr.net/npm/@elgar328/sarasa-term-k@$version/400.css" | head -1
 ```
 
-Tag the commit you built from (`HEAD`), push, and clean up. The last line also removes the build output, so a later run can't pick up a stale `dist/`:
+Tag the commit you built from (`HEAD`) and push:
 
 ```sh
 git tag "v$version"
 git push origin main "v$version"
+```
+
+Create a GitHub release for the tag. The notes are filled in from `$version` and the number of files per style in the published tarball. Leave the text as it is, so every release reads the same way:
+
+```sh
+slices=$(ls "$work/final/package/files" | grep -c -- '-400-normal-')
+gh release create "v$version" --verify-tag --latest --title "v$version" --notes-file - <<EOF
+Webfont build of Sarasa Term K from Sarasa Gothic v$version (hinted TTF): ten styles, each split into $slices unicode-range woff2 files.
+
+- npm: \`@elgar328/sarasa-term-k@$version\`
+- CDN: https://cdn.jsdelivr.net/npm/@elgar328/sarasa-term-k@$version/400.css
+
+See the README for usage.
+EOF
+```
+
+Clean up. This also removes the build output, so a later run can't pick up a stale `dist/`:
+
+```sh
 rm -rf "$venv" "$cache" "$work" dist build
 ```
