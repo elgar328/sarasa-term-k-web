@@ -17,6 +17,7 @@ FACE_RE = re.compile(
     r'src: url\("\./files/([^"]+)"\) format\("woff2"\);\s*unicode-range: ([^;]+);'
 )
 HINT_TABLES = ("fpgm", "prep", "cvt ", "gasp")
+JSDELIVR_LIMIT = 150_000_000  # bytes; jsDelivr does not serve larger npm packages
 
 
 def parse_css(path):
@@ -121,6 +122,9 @@ def main():
         ["npm", "pack", "--dry-run", "--json", a.dist], capture_output=True, text=True, check=True
     ).stdout)[0]
     dist_files = sum(len(fs) for _, _, fs in os.walk(a.dist))
+    for kind in ("size", "unpackedSize"):
+        if packed[kind] > JSDELIVR_LIMIT:
+            failures.append(f"npm package {kind} {packed[kind] / 1e6:.1f} MB exceeds jsDelivr's 150 MB limit")
     if packed["entryCount"] != dist_files:
         failures.append(f"npm pack has {packed['entryCount']} entries, dist/ has {dist_files} files")
 

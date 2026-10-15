@@ -45,25 +45,38 @@ As a result, English-only text loads just the `latin` file, and a file tree such
 
 ## Building
 
-Requires `gh`, `7zz`, `uv`, and Node.js.
+Requires `gh`, `7zz`, `uv`, and Node.js. Run everything from the repository root, in one bash or zsh session: later commands use the variables and the `py` function defined here.
+
+Set up a Python environment outside the repository, and install the browsers used by the tests:
 
 ```sh
 venv=$(mktemp -d)
-(cd "$venv" && uv init --bare --python 3.12 && uv add fonttools brotli opentype-sanitizer playwright)
+(cd "$venv" && uv init --bare && uv add fonttools brotli opentype-sanitizer playwright)
 py() { uv run --project "$venv" python -I "$@"; }
+uv run --project "$venv" playwright install webkit chromium
+```
 
+Build and check:
+
+```sh
 cache=$(mktemp -d)
 py scripts/build.py fetch --cache "$cache"        # download, verify sha256, extract
 py scripts/build.py build --ttf-dir "$cache/ttf"  # write dist/
 py scripts/check.py --ttf-dir "$cache/ttf"        # static checks
-
-npm pack ./dist
-tar xzf elgar328-sarasa-term-k-*.tgz
-uv run --project "$venv" playwright install webkit chromium
-py scripts/browser_test.py --pkg package --shots shots  # WebKit and Chromium tests
 ```
 
 `dist/` is the npm package. Generated files are not committed.
+
+Test the packed package in WebKit and Chromium:
+
+```sh
+work=$(mktemp -d)
+npm pack ./dist --pack-destination "$work"
+tar xzf "$work"/*.tgz -C "$work"
+py scripts/browser_test.py --pkg "$work/package" --shots "$work/shots"
+```
+
+When you are done, remove the temporary directories with `rm -rf "$venv" "$cache" "$work"`.
 
 To publish a new version, see [RELEASING.md](RELEASING.md).
 
