@@ -1,0 +1,7 @@
+dist/
+build/
+*.tgz
+__pycache__/
+.DS_Store
+package/
+shots/

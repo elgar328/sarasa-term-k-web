@@ -1,0 +1,15 @@
+{
+  "name": "@elgar328/sarasa-term-k",
+  "private": true,
+  "description": "Sarasa Term K (Sarasa Gothic) split into unicode-range woff2 webfonts",
+  "license": "OFL-1.1",
+  "author": "elgar328",
+  "homepage": "https://github.com/elgar328/sarasa-term-k-web#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elgar328/sarasa-term-k-web.git"
+  },
+  "keywords": ["font", "webfont", "woff2", "korean", "hangul", "monospace", "sarasa-gothic", "iosevka"],
+  "style": "index.css",
+  "jsdelivr": "index.css"
+}
