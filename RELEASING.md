@@ -7,6 +7,7 @@ The package version is the same as the Sarasa Gothic release it is built from. I
 ## 0. Before you start
 
 - Install the tools listed in [README.md › Building](README.md#building). `gh` and `npm` must be logged in: check with `gh auth status` and `npm whoami`.
+- npm requires two-factor authentication to publish. With an authenticator app, add `--otp=<code>` to `npm publish` and `npm dist-tag`. With a passkey or security key, run those commands in an interactive terminal: npm prints a link, waits while you authenticate in the browser, then continues. In a non-interactive shell it exits with `EOTP` instead.
 - Run everything from the repository root, in one bash or zsh session that you keep open until the end. Later steps use the variables defined in earlier ones.
 - Start from an up-to-date, clean `main`: `git switch main && git pull`, then `git status` must show no changes.
 - Run the first block of README › Building (`venv`, `py`, `playwright install`).
@@ -97,16 +98,16 @@ npm publish "$rc" --tag next
 npm view @elgar328/sarasa-term-k dist-tags
 ```
 
-If npm asks for a one-time password, add `--otp=<code>`. `latest` stays on the previous release. On the very first release there is no previous one, so `latest` may point at the candidate until step 5.
+npm may answer `Your package is being processed`: the version then takes several minutes to show up in `npm view`. `latest` stays on the previous release. On the very first release there is no previous one, so `latest` may point at the candidate until step 5.
 
-Check the candidate on jsDelivr. A new version can take a few minutes to appear; if you get a 404, wait and try again.
+Check the candidate on jsDelivr. A new version can take a few minutes to appear; if you get a 404, wait and try again. If you get `503 first byte timeout` or `Failed to fetch version info`, request a file from an unrelated package version that is unlikely to be cached. If that fails too, jsDelivr itself is having trouble: see the open [jsDelivr issues](https://github.com/jsdelivr/jsdelivr/issues) and try again later. Files that are not cached yet may also fail with 502 or 503 on the first `browser_test.py` run; run it again.
 
 ```sh
 curl -sI "https://cdn.jsdelivr.net/npm/@elgar328/sarasa-term-k@$rc_version/400.css" | head -1
 py scripts/browser_test.py --base-url "https://cdn.jsdelivr.net/npm/@elgar328/sarasa-term-k@$rc_version" --shots "$work/shots-cdn"
 ```
 
-`curl` must print a `200` status line, and `browser_test.py` must pass.
+`curl` must print a `200` status line, and `browser_test.py` must pass. Do not go on to step 5 until both do.
 
 ## 5. Publish the release
 
@@ -118,7 +119,7 @@ npm dist-tag rm @elgar328/sarasa-term-k next
 npm view @elgar328/sarasa-term-k dist-tags
 ```
 
-`dist-tags` must show `latest` set to `$version` and no `next`. Add `--otp=<code>` if npm asks for it.
+`dist-tags` must show `latest` set to `$version` and no `next`, once npm has finished processing the upload.
 
 Check the release on jsDelivr; it must print a `200` status line:
 
