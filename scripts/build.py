@@ -24,9 +24,9 @@ from fontTools.ttLib import TTFont
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # The only place the version is set. See RELEASING.md before changing it.
-SARASA_VERSION = "1.0.42"
+SARASA_VERSION = "1.0.43"
 ARCHIVE = f"SarasaTermK-TTF-{SARASA_VERSION}.7z"
-ARCHIVE_SHA256 = "2592c52b0dd36738a206b14451fdad68b48df0526073ff84f6082b8dfed2fb66"
+ARCHIVE_SHA256 = "394df51417f836c1421c332fe5ad7f8b6f0030d9c6b18ed2701f9e1371cdce38"
 FAMILY = "Sarasa Term K"
 FILE_PREFIX = "sarasa-term-k"
 EXTRA_CHUNK = 600  # code points per leftover chunk (mostly rare Han)

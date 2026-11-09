@@ -9,12 +9,12 @@ Sarasa Term K combines Iosevka for Latin with Source Han Sans for Hangul. Latin 
 Load a style with `<link>` or `@import`, then use the `"Sarasa Term K"` family.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@elgar328/sarasa-term-k@1.0.42/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@elgar328/sarasa-term-k@1.0.43/400.css">
 ```
 
 ```css
-@import url("https://cdn.jsdelivr.net/npm/@elgar328/sarasa-term-k@1.0.42/400.css");
-@import url("https://cdn.jsdelivr.net/npm/@elgar328/sarasa-term-k@1.0.42/400-italic.css");
+@import url("https://cdn.jsdelivr.net/npm/@elgar328/sarasa-term-k@1.0.43/400.css");
+@import url("https://cdn.jsdelivr.net/npm/@elgar328/sarasa-term-k@1.0.43/400-italic.css");
 
 code, pre {
   font-family: "Sarasa Term K", monospace;
